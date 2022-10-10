@@ -1,5 +1,6 @@
 package com.example.pembejeospringboot.Services;
 
+import com.example.pembejeospringboot.DTO.SupplierPasswordDTO;
 import com.example.pembejeospringboot.DTO.SupplierRequestDTO;
 import com.example.pembejeospringboot.DTO.SupplierResponseDTO;
 import com.example.pembejeospringboot.Exceptions.ResourceNotFoundException;
@@ -56,20 +57,30 @@ public class SupplierServices {
     }
 
     // update supplier
-    public Supplier editSupplier(Long id, SupplierRequestDTO supplierRequestDTO) {
+    public Supplier editSupplier(Long id, SupplierResponseDTO supplierResponseDTO) {
         Supplier supplier1 = supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid Id selected"));
 
-        Supplier supplier = modelMapper.map(supplierRequestDTO, Supplier.class);
+        Supplier supplier = modelMapper.map(supplierResponseDTO, Supplier.class);
 
         supplier1.setSupplierAddress(supplier.getSupplierAddress());
         supplier1.setSupplierEmail(supplier.getSupplierEmail());
-        supplier1.setSupplierPassword(supplier.getSupplierPassword());
         supplier1.setSupplierRegNo(supplier.getSupplierRegNo());
         supplier1.setSupplierPhoneNo(supplier.getSupplierPhoneNo());
         supplier1.setSupplierFName(supplier.getSupplierFName());
         supplier1.setSupplierLName(supplier.getSupplierLName());
 
+
+        return supplierRepository.save(supplier1);
+    }
+
+    public Supplier editPassword(Long id, SupplierPasswordDTO supplierPasswordDTO) {
+        Supplier supplier1 = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid Id selected"));
+
+        Supplier supplier = modelMapper.map(supplierPasswordDTO, Supplier.class);
+
+        supplier1.setSupplierPassword(supplier.getSupplierPassword());
 
         return supplierRepository.save(supplier1);
     }

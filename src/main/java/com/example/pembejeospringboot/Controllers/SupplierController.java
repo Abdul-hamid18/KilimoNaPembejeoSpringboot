@@ -1,7 +1,9 @@
 package com.example.pembejeospringboot.Controllers;
 
 import com.example.pembejeospringboot.DTO.ProductRequestDTO;
+import com.example.pembejeospringboot.DTO.SupplierPasswordDTO;
 import com.example.pembejeospringboot.DTO.SupplierRequestDTO;
+import com.example.pembejeospringboot.DTO.SupplierResponseDTO;
 import com.example.pembejeospringboot.Models.Supplier;
 import com.example.pembejeospringboot.Repositories.SupplierRepository;
 import com.example.pembejeospringboot.Services.SupplierServices;
@@ -45,8 +47,8 @@ public class SupplierController {
     }
 
     @PutMapping("/supplier/{id}")
-    public ResponseEntity<?> updateSupplier(@PathVariable Long id, @RequestBody SupplierRequestDTO supplierRequestDTO) {
-        return  ResponseEntity.ok(supplierServices.editSupplier(id,supplierRequestDTO));
+    public ResponseEntity<?> updateSupplier(@PathVariable Long id, @RequestBody SupplierResponseDTO supplierResponseDTO) {
+        return  ResponseEntity.ok(supplierServices.editSupplier(id,supplierResponseDTO));
     }
 
 
@@ -60,5 +62,11 @@ public class SupplierController {
 
     }
 
-   
+    @PutMapping("/supplier/password/{id}")
+    public ResponseEntity<?> updateSupplierPassword(@PathVariable Long id, @RequestBody SupplierPasswordDTO supplierPasswordDTO) {
+        return  ResponseEntity.ok(supplierServices.editPassword(id,supplierPasswordDTO));
+    }
+
+
+
 }

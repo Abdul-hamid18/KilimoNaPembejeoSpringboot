@@ -48,7 +48,7 @@ public class ProductController {
         return ResponseEntity.ok(productServices.selectProductBySupplierId(Id));
     }
 
-    @GetMapping("/product/supplier/category")
+    @GetMapping("/product/category")
     public ResponseEntity<?> getByCategory(@RequestParam String category){
         return ResponseEntity.ok(productServices.selectProductByCategory(category));
     }

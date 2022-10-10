@@ -44,7 +44,7 @@ public class ProductServices {
 
       //get all products
 
-      public List<ProductResponseDTO> viewProducts(){
+      public String viewProducts(){
         List<ProductResponseDTO> arrayList = new ArrayList<>();
         for(Product product :productRepository.findAll()){
 
@@ -65,7 +65,7 @@ public class ProductServices {
 
             arrayList.add(productResponseDTO);
         }
-      return arrayList;
+      return arrayList.toString();
       } 
 
     // get product by id
