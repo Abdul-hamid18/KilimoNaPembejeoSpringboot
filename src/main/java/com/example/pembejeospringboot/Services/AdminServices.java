@@ -1,22 +1,18 @@
 package com.example.pembejeospringboot.Services;
 
+import com.example.pembejeospringboot.DTO.AdminDTO;
+import com.example.pembejeospringboot.DTO.AdminPasswordDTO;
 import com.example.pembejeospringboot.Exceptions.ResourceNotFoundException;
 import com.example.pembejeospringboot.Models.Admin;
 import com.example.pembejeospringboot.Repositories.AdminRepository;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 
 @Data
 @Service
@@ -25,13 +21,22 @@ public class AdminServices {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public Admin saveAdmin(Admin admin){
         return adminRepository.save(admin);
     }
 
     //get all admin
-    public List<Admin> viewAdmins(){
-        return adminRepository.findAll();
+    public List<AdminDTO> viewAdmins(){
+        List<AdminDTO> arrayList = new ArrayList<>();
+        for (Admin admin : adminRepository.findAll()) {
+            AdminDTO adminDTO = modelMapper.map(admin, AdminDTO.class);
+            arrayList.add(adminDTO);
+        }
+        return arrayList;
+
     }
 
     //get admin by id
@@ -40,18 +45,20 @@ public class AdminServices {
     }
 
     //update admin
-    public ResponseEntity<Admin> editAdmin(Long id,Admin admin)
+    public Admin editAdmin(Long id,AdminDTO adminDTO)
     {
         Admin admin1 = adminRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid Id selected"));
+
+        Admin admin = modelMapper.map(adminDTO, Admin.class);
+
         admin1.setEmail(admin.getEmail());
-        admin1.setPassword(admin.getPassword());
         admin1.setRegNo(admin.getRegNo());
         admin1.setPhoneNo(admin.getPhoneNo());
         admin1.setFullName(admin.getFullName());
 
-        Admin admin2 = adminRepository.save(admin1);
-        return ResponseEntity.ok(admin2);
+        return adminRepository.save(admin1);
+
     }
 
     // delete admin
@@ -66,6 +73,16 @@ public class AdminServices {
         return ResponseEntity.ok(response);
     }
 
+    public Admin editPassword(Long id, AdminPasswordDTO adminPasswordDTO) {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid Id selected"));
+
+        Admin admin1 = modelMapper.map(adminPasswordDTO, Admin.class);
+
+        admin.setPassword(admin1.getPassword());
+
+        return adminRepository.save(admin);
+    }
 
 
 }

@@ -1,7 +1,8 @@
 package com.example.pembejeospringboot.Controllers;
 
+import com.example.pembejeospringboot.DTO.AdminDTO;
+import com.example.pembejeospringboot.DTO.AdminPasswordDTO;
 import com.example.pembejeospringboot.Models.Admin;
-import com.example.pembejeospringboot.Models.Supplier;
 import com.example.pembejeospringboot.Repositories.AdminRepository;
 import com.example.pembejeospringboot.Services.AdminServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AdminController {
     @PostMapping("/admin")
     public ResponseEntity<?> postToAdmin(@RequestBody Admin admin){
         // return new ResponseEntity<>(adminServices.saveAdmin(admin), HttpStatus.CREATED);
-       return ResponseEntity.ok(adminServices.saveAdmin(admin));
+        return ResponseEntity.ok(adminServices.saveAdmin(admin));
     }
 
     @GetMapping("/admin")
@@ -43,9 +44,9 @@ public class AdminController {
     }
 
     @PutMapping("/admin/{id}")
-    public ResponseEntity<?> updateAdmin(@PathVariable Long id, @RequestBody Admin admin)
+    public ResponseEntity<?> updateAdmin(@PathVariable Long id, @RequestBody AdminDTO adminDTO)
     {
-        return ResponseEntity.ok(adminServices.editAdmin(id, admin).getBody());
+        return ResponseEntity.ok(adminServices.editAdmin(id, adminDTO));
     }
 
     @PostMapping("/admin/login")
@@ -58,6 +59,11 @@ public class AdminController {
 
     }
 
+
+    @PutMapping("/admin/password/{id}")
+    public ResponseEntity<?> updateAdminPassword(@PathVariable Long id, @RequestBody AdminPasswordDTO adminPasswordDTO) {
+        return  ResponseEntity.ok(adminServices.editPassword(id,adminPasswordDTO));
+    }
 
 
 
